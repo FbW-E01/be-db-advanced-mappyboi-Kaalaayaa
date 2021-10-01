@@ -16,10 +16,29 @@ export default function App() {
   const DefaultIcon = L.icon({ iconUrl: icon, shadowUrl: null  });
   L.Marker.prototype.options.icon = DefaultIcon;
 
-  console.log("BACKEND RUNNING AT " + process.env.REACT_APP_BACKEND);
+  console.log("BACKEND RUNNING AT " + "http://localhost:8080/");
+
   function report() {
-    // TODO: Send abandoned bicycle report to the backend
-    alert("TBD");
+
+    const report = {
+      position: position.lat + "," + position.lng,
+      description: desc,
+    };
+    
+    const url = "http://localhost:8080/" + "notifications"
+    const config = {
+      method: "POST",
+      body: JSON.stringify(report),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+
+  fetch(url, config)
+    .then( response => response.json())
+    .then(result => console.log(result))
+    .catch(error => console.log("Oh noo", error))
+    
   }
 
   return (
